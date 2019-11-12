@@ -4,11 +4,11 @@ from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 # Create your views here.
 from django.http import HttpResponse
+from wiki.forms import PageForm
 
 
 def index(request):
     return HttpResponse("Hello, world. You're at the wiki's index.")
-#
 
 class PageList(ListView):
     """
@@ -20,25 +20,23 @@ class PageList(ListView):
       3. Replace pass below with the code to render a template named `list.html`.
     """
     model = Page
-    template_name = 'pages/list.html'
+    context_object_name = "pages"
+    template_name = "page-list.html"
+    # template_name = 'pages/list.html'
 
-    def get(self, request):
-        """ Returns a list of wiki pages. """
-        pages = super().get(request)
-        print(pages)
-        return pages
-        # return render(request, template_name, pages)
-
-
-    # model = Article
-    # paginate_by = 100
-    #
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context['now'] = timezone.now()
-    #     return context
-
-
+    # def get(self, request):
+    #     """ Returns a list of wiki pages. """
+    #     # return HttpResponse("Hello world!")
+    #     # context = {
+    #     #     "myvar": "some value"
+    #     # }
+    #     context = {
+    #         'pages': Page.objects.all()
+    #     }
+    #     # print(context)
+    #     # return context
+    #     # return render(request, template_name, context)
+    #     return render(request, 'page-list.html', context)
 
 
 class PageDetailView(DetailView):
@@ -59,13 +57,36 @@ class PageDetailView(DetailView):
            - Message Content: REPLACE_WITH_PAGE_TITLE has been successfully updated.
     """
     model = Page
-    template_name = 'pages/page.html'
+    # context_object_name = "page"
+    # template_name = "page-detail.html"
+    # template_name = 'pages/page.html'
 
     def get(self, request, slug):
         """ Returns a specific of wiki page by slug. """
-        pages = super().get(request)
-        print(pages)
-        return pages
+        # return HttpResponse("Hello World!"+slug)
+        # pages = super().get(request)
+        # print(pages)
+        # return pages
+        # pass
+        print("In get method")
+        context = {
+            'page': Page.objects.get(slug=slug)
 
-    def post(self, request, slug):
-        pass
+        }
+        print("In get method after dict")
+        return render(request, "page-detail.html", context)
+
+    # def post(self, request, slug):
+    #     # context = {
+    #     #         'form': request.POST.get('model')
+    #     #     }
+    #     # return render(request, "page-detail.html", context)
+    #     print("Hello World")
+    #     form = Page(request.POST)
+    #     if form.is_valid():
+    #         print("Hello Mars")
+    #         args = {
+    #                 'model': request.POST.get('model')
+    #         }
+    #         return render(request, "page-post.html", args)
+        # return HttpResponse("You're voting on question %s." % question_id)

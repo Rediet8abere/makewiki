@@ -15,8 +15,10 @@ from .views import PageList, PageDetailView
 #
 urlpatterns = [
     # path('', views.index, name='index'),
-    path('list ', PageList.as_view(), name='wiki-list-page'),
-    path('list/<slug:slug>', PageDetailView.as_view(), name='wiki-details-page'),
+    path('', PageList.as_view(), name='wiki-list-page'),
+    path('<slug>/', PageDetailView.as_view(), name='wiki-details-page'),
+    # path('post/', PageDetailView.as_view(), name='wiki-details-page-post'),
+    # path('<int:question_id>/vote/', PageDetailView.as_view(), name='vote'),
 
 ]
 #
