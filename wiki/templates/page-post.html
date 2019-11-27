@@ -5,12 +5,10 @@
         <title></title>
     </head>
     <body>
-        <div class="container">
-            <h1>In Post Html</h1>
-                <form method="post">
-                    <input type="text">
-                    <button type="submit">Submit </button>
-                </form>
-        </div>
+        <h2>New post</h2>
+            <form method="POST" class="post-form">{% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="save btn btn-default">Save</button>
+            </form>
     </body>
 </html>

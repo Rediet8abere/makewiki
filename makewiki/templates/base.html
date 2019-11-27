@@ -21,7 +21,9 @@
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
             <!-- CHALLENGE: Replace # with the url template tag. -->
-            <a class="nav-link" href="{% url "wiki-list-page" %}">📓 Pages <span class="sr-only">(current)</span></a>
+            <!-- {% url "wiki-list-page" %} -->
+            <!-- {% url 'post_new' %} -->
+            <a class="nav-link" href="{% url 'wiki-list-page' %}">📓 Pages <span class="sr-only">(current)</span></a>
           </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">

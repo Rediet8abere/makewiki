@@ -1,7 +1,11 @@
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from wiki.models import Page
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import FormView
+from django.contrib.auth.models import User
 # Create your views here.
 from django.http import HttpResponse
 from wiki.forms import PageForm
@@ -22,7 +26,6 @@ class PageList(ListView):
     model = Page
     context_object_name = "pages"
     template_name = "page-list.html"
-    # template_name = 'pages/list.html'
 
     # def get(self, request):
     #     """ Returns a list of wiki pages. """
@@ -43,7 +46,7 @@ class PageDetailView(DetailView):
     """
     CHALLENGES:
       1. On GET, render a template named `page.html`.
-      2. Replace this docstring with a description of what thos accomplishes.
+      2. Replace this docstring with a description of what this accomplishes.
 
     STRETCH CHALLENGES:
       1. Import the PageForm class from forms.py.
@@ -57,36 +60,28 @@ class PageDetailView(DetailView):
            - Message Content: REPLACE_WITH_PAGE_TITLE has been successfully updated.
     """
     model = Page
-    # context_object_name = "page"
-    # template_name = "page-detail.html"
-    # template_name = 'pages/page.html'
+    context_object_name = "page"
+    template_name = "page-detail.html"
 
-    def get(self, request, slug):
-        """ Returns a specific of wiki page by slug. """
-        # return HttpResponse("Hello World!"+slug)
-        # pages = super().get(request)
-        # print(pages)
-        # return pages
-        # pass
-        print("In get method")
-        context = {
-            'page': Page.objects.get(slug=slug)
 
-        }
-        print("In get method after dict")
-        return render(request, "page-detail.html", context)
+class PageCreateView(FormView):
+    """ Renders a form page to create a new page."""
+    template_name = 'page-post.html'
+    form_class = PageForm
+    success_url = '/'
 
-    # def post(self, request, slug):
-    #     # context = {
-    #     #         'form': request.POST.get('model')
-    #     #     }
-    #     # return render(request, "page-detail.html", context)
-    #     print("Hello World")
-    #     form = Page(request.POST)
-    #     if form.is_valid():
-    #         print("Hello Mars")
-    #         args = {
-    #                 'model': request.POST.get('model')
-    #         }
-    #         return render(request, "page-post.html", args)
-        # return HttpResponse("You're voting on question %s." % question_id)
+    def post(self, request):
+        if request.method == "GET":
+            form = PageForm()
+        else:
+            form = PageForm(request.POST)
+            if form.is_valid():
+                page = form.save(commit=False)
+                page.author = User.objects.get(id=request.POST['author'])
+                page.save()
+                return HttpResponseRedirect(reverse_lazy('wiki-create-page'))
+            else:
+                return render(request, self.template_name, {'form': form})
+
+    def form_vaild(self, form):
+        return super().form_valid(form)
