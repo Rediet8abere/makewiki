@@ -1,4 +1,7 @@
 <!-- {{myvar}} -->
+{% load static %}
+<img src="{% static "wiki/chrstmas.jpg" %}" alt="My image">
+
 <h1>All Pages</h1>
 <ul>
 {% for page in pages %}
