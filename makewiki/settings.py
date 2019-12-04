@@ -132,3 +132,5 @@ WIKI_PAGE_TITLE_MAX_LENGTH = 600
 # ALLOWED_HOSTS = ['198.211.99.20', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = ['localhost', 'makewiki-redi.herokuapp.com']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+os.makedirs(STATIC_TMP, exist_ok=True)
+os.makedirs(STATIC_ROOT, exist_ok=True)
